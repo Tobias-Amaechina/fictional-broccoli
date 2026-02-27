@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Task List App</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+    }
+    input {
+      padding: 8px;
+      width: 70%;
+      margin-right: 10px;
+    }
+    button {
+      padding: 8px 12px;
+    }
+    ul {
+      margin-top: 20px;
+    }
+    li {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>📋 My Task List</h1>
+  <input id="taskInput" type="text" placeholder="Enter your task..." />
+  <button onclick="addTask()">Add Task</button>
+
+  <ul id="taskList"></ul>
+
+  <script>
+    // Our task list (just like tasks = [])
+    const tasks = [];
+
+    // This function adds a task to th    function addTask() {
+      cons
+
+    // This function displays all the tasks on the screen
+    function renderTasks() {
+      const list = document.getElementById("taskList");
+      list.innerHTML = ""; // Clear previous list
+
+      tasks.forEach((task, index) => {
+        const li = document.createElement("li");
+        li.textContent = `${index + 1}. ${task}`;
+        list.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>

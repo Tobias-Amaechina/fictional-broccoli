@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en-gb">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autocomplete Example</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function autocomplete(input, arr) {
+            let currentFocus;
+
+            input.addEventListener("input", function() {
+                let list, item, i, val = this.value;
+                closeAllLists();
+                if (!val) { return false; }
+                currentFocus = -1;
+
+                list = document.createElement("DIV");
+                list.setAttribute("id", this.id + "autocomplete-list");
+                list.setAttribute("class", "autocomplete-items");
+
+                this.parentNode.appendChild(list);
+
+                for (i = 0; i < arr.length; i++) {
+                    if (arr[i].substr(0, val.length).toUpperCase() === val.toUpperCase()) {
+                        item = document.createElement("DIV");
+                        item.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                        item.innerHTML += arr[i].substr(val.length);
+                        item.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                        item.addEventListener("click", function() {
+                            input.value = this.getElementsByTagName("input")[0].value;
+                            closeAllLists();
+                        });
+                        list.appendChild(item);
+                    }
+                }
+            });
+
+            input.addEventListener("keydown", function(e) {
+                let items = document.getElementById(this.id + "autocomplete-list");
+                if (items) items = items.getElementsByTagName("div");
+                if (e.keyCode === 40) {
+                    currentFocus++;
+                    addActive(items);
+                } else if (e.keyCode === 38) {
+                    currentFocus--;
+                    addActive(items);
+                } else if (e.keyCode === 13) {
+                    e.preventDefault();
+                    if (currentFocus > -1 && items) items[currentFocus].click();
+                }
+            });
+
+            function addActive(items) {
+                if (!items) return false;
+                removeActive(items);
+                if (currentFocus >= items.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = items.length - 1;
+                items[currentFocus].classList.add("autocomplete-active");
+            }
+            function removeActive(items) {
+                for (let i = 0; i < items.length; i++) {
+                    items[i].classList.remove("autocomplete-active");
+                }
+            }
+            function closeAllLists(elmnt) {
+                let items = document.getElementsByClassName("autocomplete-items");
+                for (let i = 0; i < items.length; i++) {
+                    if (elmnt !== items[i] && elmnt !== input) {
+                        items[i].parentNode.removeChild(items[i]);
+                    }
+                }
+            }
+            document.addEventListener("click", function(e) {
+                closeAllLists(e.target);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h2>Autocomplete Example</h2>
+    <p>Start typing a name:</p>
+    <div class="autocomplete" style="width:300px;">
+        <input id="myInput" type="text" name="myCountry" placeholder="Country">
+    </div>
+
+    <script>
+        const countries = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan"];
+        autocomplete(document.getElementById("myInput"), countries);
+    </script>   
+</body>
+<footer>
+    <small>Copyright &copy; 2023 Rock Villa Hostel. All rights reserved.</small>
+    <p>Contact us at: <a href="mailto:tobias.asaint@gmail.com"></a></p>
+
+
+    <p>Follow us on social media:
+        <a href="https://www.facebook.com/rockvilla" target="_blank">Facebook</a>
+        <a href="https://www.twitter.com/rockvilla" target="_blank">Twitter</a>
+        <a href="https://www.instagram.com/rockvilla" target="_blank">Instagram</a>
+    </p>
+</footer>
+</body>
+
+</html>
